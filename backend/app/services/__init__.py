@@ -24,6 +24,7 @@ from app.services.retention_window import RetentionWindowService
 from app.services.publish_view import PublishViewService
 from app.services.quota_meter import QuotaMeterService
 from app.services.lake_audit import LakeAuditService
+from app.services.source_handover import SourceHandoverService
 
 SERVICES: dict[str, BaseModuleService] = {
     "lake_catalog": LakeCatalogService(),
@@ -48,6 +49,7 @@ SERVICES: dict[str, BaseModuleService] = {
     "publish_view": PublishViewService(),
     "quota_meter": QuotaMeterService(),
     "lake_audit": LakeAuditService(),
+    "source_handover": SourceHandoverService(),
 }
 
 

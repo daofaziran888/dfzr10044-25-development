@@ -4,6 +4,7 @@ from __future__ import annotations
 import time
 from typing import Any
 
+from app.handover_store import handover_store, normalize_ts
 from app.services.base import BaseModuleService
 from app.store import store
 from app.lake_store import lake_store
@@ -42,6 +43,11 @@ class LakeCatalogService(BaseModuleService):
             lake_table = str(entry.get("表名全称", ""))
             if lake_table:
                 lake_store.set_watermark(lake_table, "登记时间", str(entry.get("登记时间", "2026-01-01")), "append")
+                # 确认登记即建立表级采集截止点，后续来源交接以它为归属基线。
+                registered_at = str(entry.get("登记时间") or "").strip()
+                if registered_at:
+                    handover_store.ensure_table_cutoff(
+                        lake_table, normalize_ts(registered_at, default_time="00:00:00"))
         return super().run_action(entry_id, action)
 
     def query_by_keyword(self, keyword: str, page: int = 1, size: int = 20) -> tuple[list[dict[str, Any]], int]:

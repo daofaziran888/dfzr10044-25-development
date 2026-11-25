@@ -60,6 +60,14 @@
             >
               {{ action }}
             </button>
+            <RouterLink
+              v-if="meta.key === 'source_handover'"
+              class="link"
+              :to="`/source_handover/${row['交接编号']}`"
+              :data-testid="`detail-${row.id}`"
+            >
+              交接详情
+            </RouterLink>
           </td>
         </tr>
         <tr v-if="!rows.length">
